@@ -17,7 +17,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: main   
+
+      - name: Force branch checkout (IMPORTANT FIX)
+        run: |
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
 
       - name: Update manifest version
         run: |
@@ -31,12 +36,12 @@ jobs:
 
           mv "$tmp" custom_components/knmi_seismisch/manifest.json
 
-      - name: Commit and Push Changes
+      - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Bump manifest version to ${{ github.ref_name }} [skip ci]"
           file_pattern: "custom_components/knmi_seismisch/manifest.json"
-          branch: main   # still fine, now actually works because HEAD is on main
+          branch: main
 
       - name: Create ZIP
         run: |
