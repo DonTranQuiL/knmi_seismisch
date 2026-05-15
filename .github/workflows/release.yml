@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update manifest version
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+          tmp=$(mktemp)
+          jq --arg version "$VERSION" '.version = $version' \
+            custom_components/knmi_seismisch/manifest.json > "$tmp"
+
+          mv "$tmp" custom_components/knmi_seismisch/manifest.json
+
+      - name: Create ZIP
+        run: |
+          cd custom_components/knmi_seismisch
+          zip -r knmi_seismisch.zip ./
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: custom_components/knmi_seismisch/knmi_seismisch.zip
