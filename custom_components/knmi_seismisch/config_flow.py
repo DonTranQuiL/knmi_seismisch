@@ -1,7 +1,7 @@
 import logging
 import voluptuous as vol
 from homeassistant import config_entries
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from .const import DOMAIN, CONF_INSTANCE_NAME, CONF_SEARCH_TERMS, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
 
@@ -17,7 +17,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             search_terms = user_input.get(CONF_SEARCH_TERMS)
             scan_interval = user_input.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
 
-            if not instance_name: errors[CONF_INSTANCE_NAME] = "required"
+            if not instance_name:
+                errors[CONF_INSTANCE_NAME] = "required"
 
             if not errors:
                 return self.async_create_entry(
