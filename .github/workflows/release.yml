@@ -28,6 +28,15 @@ jobs:
 
           mv "$tmp" custom_components/knmi_seismisch/manifest.json
 
+      - name: Commit and push updated manifest back to repo
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add custom_components/knmi_seismisch/manifest.json
+          # [skip ci] prevents this commit from triggering workflows infinitely
+          git commit -m "Bump manifest version to ${GITHUB_REF_NAME#v} [skip ci]" || echo "No changes to commit"
+          git push
+
       - name: Create ZIP
         run: |
           cd custom_components/knmi_seismisch
