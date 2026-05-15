@@ -12,12 +12,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
-    steps:   
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: main
+          ref: main   
 
       - name: Update manifest version
         run: |
@@ -36,8 +36,7 @@ jobs:
         with:
           commit_message: "Bump manifest version to ${{ github.ref_name }} [skip ci]"
           file_pattern: "custom_components/knmi_seismisch/manifest.json"
-          # This forces the commit to go to the main branch, regardless of the tag
-          branch: main 
+          branch: main   # still fine, now actually works because HEAD is on main
 
       - name: Create ZIP
         run: |
