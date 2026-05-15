@@ -1,14 +1,16 @@
 {
   "domain": "knmi_seismisch",
   "name": "KNMI Seismische Activiteit",
-  "config_flow": true,
-  "documentation": "https://github.com/Malosaaa/knmi_seismisch",
-  "issue_tracker": "https://github.com/Malosaaa/knmi_seismisch/issues",
+  "after_dependencies": [],
   "codeowners": [
     "@Malosaaa"
   ],
-  "requirements": [],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/Malosaaa/knmi_seismisch",
+  "integration_type": "service",
   "iot_class": "cloud_polling",
-  "version": "1.0.0",
-  "integration_type": "service"
+  "issue_tracker": "https://github.com/Malosaaa/knmi_seismisch/issues",
+  "requirements": [],
+  "version": "1.0.0"
 }
