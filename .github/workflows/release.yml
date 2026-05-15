@@ -12,12 +12,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
-    steps:
+    steps:   
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Fetch depth 0 is required for pushing
-          fetch-depth: 0 
+          fetch-depth: 0
+          ref: main
 
       - name: Update manifest version
         run: |
