@@ -4,17 +4,23 @@ import logging
 
 _LOGGER = logging.getLogger(__name__)
 
+
 class KNMISeismischCache:
     def __init__(self, hass, instance_name):
         self.hass = hass
         current_dir = os.path.dirname(__file__)
-        safe_name = "".join(x for x in instance_name if x.isalnum() or x in " _-").strip().replace(" ", "_").lower()
+        safe_name = (
+            "".join(x for x in instance_name if x.isalnum() or x in " _-")
+            .strip()
+            .replace(" ", "_")
+            .lower()
+        )
         self.cache_path = os.path.join(current_dir, f".knmi_seismisch_{safe_name}.json")
 
     def load_cache(self):
         if os.path.exists(self.cache_path):
             try:
-                with open(self.cache_path, 'r', encoding='utf-8') as f:
+                with open(self.cache_path, "r", encoding="utf-8") as f:
                     return json.load(f)
             except Exception as e:
                 _LOGGER.error("Fout bij laden cache: %s", e)
@@ -22,7 +28,7 @@ class KNMISeismischCache:
 
     def save_cache(self, data):
         try:
-            with open(self.cache_path, 'w', encoding='utf-8') as f:
+            with open(self.cache_path, "w", encoding="utf-8") as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
         except Exception as e:
             _LOGGER.error("Fout bij opslaan cache: %s", e)

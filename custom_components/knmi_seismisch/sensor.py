@@ -3,23 +3,29 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from .const import DOMAIN
 
+
 async def async_setup_entry(hass, entry, async_add_entities):
     coordinator = hass.data[DOMAIN][entry.entry_id]
     instance_name = entry.data["instance_name"]
-    
-    async_add_entities([
-        KNMISeismischSensor(coordinator, instance_name),
-        KNMILastUpdateSensor(coordinator, instance_name),
-        KNMILastUpdateStatusSensor(coordinator, instance_name),
-        KNMIConsecutiveErrorsSensor(coordinator, instance_name),
-    ])
+
+    async_add_entities(
+        [
+            KNMISeismischSensor(coordinator, instance_name),
+            KNMILastUpdateSensor(coordinator, instance_name),
+            KNMILastUpdateStatusSensor(coordinator, instance_name),
+            KNMIConsecutiveErrorsSensor(coordinator, instance_name),
+        ]
+    )
+
 
 class KNMIBaseEntity(CoordinatorEntity, SensorEntity):
     def __init__(self, coordinator, instance_name):
         super().__init__(coordinator)
         self._instance_name = instance_name
         self._device_id = f"knmi_seismisch_{instance_name.lower().replace(' ', '_')}"
-        self._attr_has_entity_name = True # Vertelt HA dat we vertalingen + apparaatnaam gebruiken
+        self._attr_has_entity_name = (
+            True  # Vertelt HA dat we vertalingen + apparaatnaam gebruiken
+        )
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -30,10 +36,11 @@ class KNMIBaseEntity(CoordinatorEntity, SensorEntity):
             model="Aardbevingen & Seismische Data",
         )
 
+
 class KNMISeismischSensor(KNMIBaseEntity):
     def __init__(self, coordinator, instance_name):
         super().__init__(coordinator, instance_name)
-        self._attr_translation_key = "earthquakes" # Kijkt nu in en.json / nl.json
+        self._attr_translation_key = "earthquakes"  # Kijkt nu in en.json / nl.json
         self._attr_unique_id = f"{self._device_id}_hoofdsensor"
         self._attr_icon = "mdi:waveform"
 
@@ -57,8 +64,9 @@ class KNMISeismischSensor(KNMIBaseEntity):
             "depth_km": latest.get("depth_km"),
             "latitude": latest.get("latitude"),
             "longitude": latest.get("longitude"),
-            "history": self.coordinator.data[1:]
+            "history": self.coordinator.data[1:],
         }
+
 
 class KNMILastUpdateSensor(KNMIBaseEntity):
     def __init__(self, coordinator, instance_name):
@@ -71,9 +79,13 @@ class KNMILastUpdateSensor(KNMIBaseEntity):
 
     @property
     def state(self):
-        if hasattr(self.coordinator, "last_update_success_timestamp") and self.coordinator.last_update_success_timestamp:
+        if (
+            hasattr(self.coordinator, "last_update_success_timestamp")
+            and self.coordinator.last_update_success_timestamp
+        ):
             return self.coordinator.last_update_success_timestamp
         return None
+
 
 class KNMILastUpdateStatusSensor(KNMIBaseEntity):
     def __init__(self, coordinator, instance_name):
@@ -85,7 +97,10 @@ class KNMILastUpdateStatusSensor(KNMIBaseEntity):
 
     @property
     def state(self):
-        return "Success" if getattr(self.coordinator, "error_count", 0) == 0 else "Error"
+        return (
+            "Success" if getattr(self.coordinator, "error_count", 0) == 0 else "Error"
+        )
+
 
 class KNMIConsecutiveErrorsSensor(KNMIBaseEntity):
     def __init__(self, coordinator, instance_name):
