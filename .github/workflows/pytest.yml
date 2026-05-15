@@ -1,0 +1,35 @@
+name: Python Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          # This speeds up future runs by caching downloaded packages
+          cache: "pip" 
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          
+          # Install pytest and the Home Assistant testing toolkit
+          pip install pytest pytest-asyncio homeassistant pytest-homeassistant-custom-component
+          
+          # If you have a requirements.txt, install it (if not, ignore)
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run Pytest
+        run: |
+          pytest tests/ -v
