@@ -1,4 +1,3 @@
-import asyncio
 import os
 import xml.etree.ElementTree as ET
 from datetime import timedelta, datetime
@@ -34,12 +33,15 @@ class KNMISeismischCoordinator(DataUpdateCoordinator):
         try:
             with open(debug_path, "w", encoding="utf-8") as f:
                 f.write(content)
-        except Exception: pass
+        except Exception:
+            pass
 
     def _clear_debug_file_sync(self, debug_path):
         if os.path.exists(debug_path):
-            try: os.remove(debug_path)
-            except Exception: pass
+            try:
+                os.remove(debug_path)
+            except Exception:
+                pass
 
 
     async def _async_update_data(self):
@@ -122,26 +124,33 @@ class KNMISeismischCoordinator(DataUpdateCoordinator):
                             try:
                                 dt = datetime.fromisoformat(t_val.text.replace("Z", "+00:00"))
                                 time_str = dt.strftime("%d-%m-%Y %H:%M")
-                            except: time_str = t_val.text
+                            except Exception:
+                                time_str = t_val.text
                             
                         la_val = origin.find('.//latitude/value')
-                        if la_val is not None: lat = la_val.text
+                        if la_val is not None:
+                            lat = la_val.text
                         
                         lo_val = origin.find('.//longitude/value')
-                        if lo_val is not None: lon = lo_val.text
+                        if lo_val is not None:
+                            lon = lo_val.text
                         
                         # Depth is in meters, converteer naar kilometers
                         d_val = origin.find('.//depth/value')
                         if d_val is not None:
-                            try: depth = str(round(float(d_val.text) / 1000, 1))
-                            except: depth = d_val.text
+                            try:
+                                depth = str(round(float(d_val.text) / 1000, 1))
+                            except Exception:
+                                depth = d_val.text
                             
                     # 3. Magnitude
                     mag = "0.0"
                     mag_val = event.find('.//magnitude/mag/value')
                     if mag_val is not None:
-                        try: mag = str(round(float(mag_val.text), 1))
-                        except: mag = mag_val.text
+                        try:
+                            mag = str(round(float(mag_val.text), 1))
+                        except Exception:
+                            mag = mag_val.text
 
                     events.append({
                         "city": display_location,
