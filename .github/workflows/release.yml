@@ -16,8 +16,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # This forces GitHub to check out your actual branch so it can be pushed to
-          ref: ${{ github.event.repository.default_branch }}
+          # Fetch full history so we can push back to the branch
+          fetch-depth: 0 
 
       - name: Update manifest version
         run: |
@@ -31,14 +31,16 @@ jobs:
 
           mv "$tmp" custom_components/knmi_seismisch/manifest.json
 
-      - name: Commit and push updated manifest back to repo
+      - name: Commit and push back to repository
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add custom_components/knmi_seismisch/manifest.json
+          
+          # We use [skip ci] so this automatic commit doesn't trigger other workflows
           git commit -m "Bump manifest version to ${GITHUB_REF_NAME#v} [skip ci]" || echo "No changes to commit"
           
-          # Explicitly push directly back into your repository's default branch
+          # This pushes the detached tag commit directly into your main branch
           git push origin HEAD:${{ github.event.repository.default_branch }}
 
       - name: Create ZIP
