@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
 from homeassistant.const import EntityCategory
-from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.knmi_seismisch.sensor import (
     KNMISeismischSensor,
@@ -9,6 +8,7 @@ from custom_components.knmi_seismisch.sensor import (
     KNMILastUpdateStatusSensor,
     KNMIConsecutiveErrorsSensor,
 )
+
 
 @pytest.fixture
 def mock_coord_data():
@@ -33,7 +33,7 @@ def mock_coord_data():
 def test_main_seismic_sensor(mock_coord_data):
     """Verify primary event entity maps current data accurately into context blocks."""
     sensor = KNMISeismischSensor(mock_coord_data, "Limburg")
-    
+
     assert sensor.state == "3.1"
     attrs = sensor.extra_state_attributes
     assert attrs["location"] == "Urmond"
@@ -45,7 +45,7 @@ def test_main_seismic_sensor_empty(mock_coord_data):
     """Verify baseline state responses handle missing network components smoothly."""
     mock_coord_data.data = []
     sensor = KNMISeismischSensor(mock_coord_data, "Limburg")
-    
+
     assert sensor.state == "0.0"
     assert sensor.extra_state_attributes == {}
 
