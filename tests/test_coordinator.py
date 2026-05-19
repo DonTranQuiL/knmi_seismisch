@@ -32,25 +32,30 @@ MOCK_XML_DATA = """<?xml version="1.0" encoding="UTF-8"?>
     </eventParameters>
 </q:quakeml>"""
 
+
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(enable_custom_integrations):
     """Enable loading custom components during testing."""
     yield
 
+
 @pytest.fixture
 def mock_cache():
     """Mock the cache module to isolate disk access."""
-    with patch("custom_components.knmi_seismisch.coordinator.KNMISeismischCache") as mock_cls:
+    with patch(
+        "custom_components.knmi_seismisch.coordinator.KNMISeismischCache"
+    ) as mock_cls:
         mock_inst = MagicMock()
         mock_cls.return_value = mock_inst
         yield mock_inst
+
 
 @pytest.fixture
 def mock_entry():
     return MockConfigEntry(
         domain=DOMAIN,
         data={"instance_name": "Nederland", "search_terms": ""},
-        options={"scan_interval": 3600}
+        options={"scan_interval": 3600},
     )
 
 
@@ -68,7 +73,9 @@ async def test_coordinator_skips_first_run(hass: HomeAssistant, mock_entry, mock
 
 @pytest.mark.asyncio
 @patch("custom_components.knmi_seismisch.coordinator.async_get_clientsession")
-async def test_coordinator_successful_parse(mock_get_session, hass: HomeAssistant, mock_entry, mock_cache):
+async def test_coordinator_successful_parse(
+    mock_get_session, hass: HomeAssistant, mock_entry, mock_cache
+):
     """Test full parsing and conversion tracking maps accurate attributes."""
     coord = KNMISeismischCoordinator(hass, mock_entry)
     coord._is_first_run = False
@@ -97,7 +104,9 @@ async def test_coordinator_successful_parse(mock_get_session, hass: HomeAssistan
 
 @pytest.mark.asyncio
 @patch("custom_components.knmi_seismisch.coordinator.async_get_clientsession")
-async def test_coordinator_search_term_filtering(mock_get_session, hass: HomeAssistant, mock_cache):
+async def test_coordinator_search_term_filtering(
+    mock_get_session, hass: HomeAssistant, mock_cache
+):
     """Ensure search queries ignore mismatching entries completely."""
     entry = MockConfigEntry(
         domain=DOMAIN,
@@ -123,7 +132,9 @@ async def test_coordinator_search_term_filtering(mock_get_session, hass: HomeAss
 
 @pytest.mark.asyncio
 @patch("custom_components.knmi_seismisch.coordinator.async_get_clientsession")
-async def test_coordinator_http_and_parse_faults(mock_get_session, hass: HomeAssistant, mock_entry, mock_cache):
+async def test_coordinator_http_and_parse_faults(
+    mock_get_session, hass: HomeAssistant, mock_entry, mock_cache
+):
     """Verify runtime fallback loops trigger connection faults gracefully on server drops."""
     coord = KNMISeismischCoordinator(hass, mock_entry)
     coord._is_first_run = False
