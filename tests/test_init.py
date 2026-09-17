@@ -1,14 +1,15 @@
+from unittest.mock import AsyncMock, MagicMock, patch
+
 import pytest
-from unittest.mock import MagicMock, AsyncMock, patch
 from homeassistant.core import HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.knmi_seismisch.const import DOMAIN
 from custom_components.knmi_seismisch import (
     async_setup_entry,
     async_unload_entry,
     update_listener,
 )
+from custom_components.knmi_seismisch.const import DOMAIN
 
 
 @pytest.fixture(autouse=True)
