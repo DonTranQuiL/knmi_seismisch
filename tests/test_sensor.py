@@ -1,12 +1,13 @@
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
 from homeassistant.const import EntityCategory
 
 from custom_components.knmi_seismisch.sensor import (
-    KNMISeismischSensor,
+    KNMIConsecutiveErrorsSensor,
     KNMILastUpdateSensor,
     KNMILastUpdateStatusSensor,
-    KNMIConsecutiveErrorsSensor,
+    KNMISeismischSensor,
 )
 
 
