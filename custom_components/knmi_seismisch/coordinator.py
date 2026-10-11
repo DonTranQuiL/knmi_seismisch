@@ -137,9 +137,7 @@ class KNMISeismischCoordinator(DataUpdateCoordinator):
                         t_val = origin.find(".//time/value")
                         if t_val is not None:
                             try:
-                                dt = datetime.fromisoformat(
-                                    t_val.text.replace("Z", "+00:00")
-                                )
+                                dt = datetime.fromisoformat(t_val.text)
                                 time_str = dt.strftime("%d-%m-%Y %H:%M")
                             except Exception:
                                 time_str = t_val.text
