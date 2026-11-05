@@ -82,7 +82,18 @@ Een efficiënte en robuuste Home Assistant integratie die de meest recente seism
 * **Meertalig:** Volledige ondersteuning voor Nederlands en Engels (zowel de UI als de sensor-namen).
 * **Zoekfilters:** Filter bevingen op basis van specifieke zoektermen (bijv. alleen "Groningen" of "Limburg").
 
-## 📥 Installatie via HACS
+## 📥 Installatie
+
+### Marketplace (Home Assistant 2026.11 en nieuwer, aanbevolen)
+
+[![Open je Home Assistant en open deze repository in de Marketplace.](https://my.home-assistant.io/badges/marketplace_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=DonTranQuiL&repository=knmi_seismisch&category=integration)
+
+1. Ga in Home Assistant naar **Instellingen > Marketplace** (Settings > Marketplace) en zoek naar **KNMI Seismische Activiteit** (of gebruik de knop hierboven).
+2. Open de integratie en kies **Install**. De setup start meteen, een herstart is niet nodig.
+
+> **Nog niet in de Marketplace-catalogus?** KNMI Seismische Activiteit staat nog niet in de HACS default list en is dus nog niet te vinden via zoeken in de Marketplace. Kies tot die tijd rechtsboven in de Marketplace **Add from link**, vul `https://github.com/DonTranQuiL/knmi_seismisch` in, kies **Add**, open daarna KNMI Seismische Activiteit en kies **Install**.
+
+### HACS (Home Assistant vóór 2026.11)
 
 1. Ga in Home Assistant naar **HACS** > **Integraties**.
 2. Klik rechtsboven op de drie puntjes en kies **Aangepaste repositories** (Custom repositories).
