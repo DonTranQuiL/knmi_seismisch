@@ -2,6 +2,9 @@
   "domain": "knmi_seismisch",
   "name": "KNMI Seismische Activiteit",
   "after_dependencies": [],
+  "categories": [
+    "weather_alerts.public_warnings"
+  ],
   "codeowners": [
     "@Malosaaa"
   ],
